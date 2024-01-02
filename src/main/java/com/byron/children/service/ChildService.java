@@ -1,6 +1,7 @@
 package com.byron.children.service;
 
 import com.byron.children.repository.ChildRepository;
+import com.byron.children.repository.MotherRepository;
 import org.springframework.stereotype.Service;
 import com.byron.children.entities.Child;
 
@@ -24,15 +25,41 @@ public class ChildService {
 
         Child child = null;
 
-        if (childRepository.findById(regNumber).isPresent()){
-            child = childRepository.findById(regNumber).get();
+        var childRecord = childRepository.findById(regNumber);
 
-            child.setName(childBody.getName());
-            child.setPlaceOfBirth(childBody.getPlaceOfBirth());
-            child.setDateOfBirth(childBody.getDateOfBirth());
-            child.setWeight(childBody.getWeight());
-            child.setGender(childBody.getGender());
-            child.setMother(childBody.getMother());
+        if (childRecord.isPresent()){
+            child = childRecord.get();
+
+            var name = childBody.getName();
+            var pob = childBody.getPlaceOfBirth();
+            var dob = childBody.getDateOfBirth();
+            var weight = childBody.getWeight();
+            var gender = childBody.getGender();
+            var mother = childBody.getMother();
+
+            if (name != null){
+                child.setName(name);
+            }
+
+            if (pob != null){
+                child.setPlaceOfBirth(pob);
+            }
+
+            if (dob != null){
+                child.setDateOfBirth(dob);
+            }
+
+//            if (weight != null){
+//                child.setWeight(weight);
+//            }
+
+            if (gender != null){
+                child.setGender(gender);
+            }
+
+            if (mother != null){
+                child.setMother(mother);
+            }
 
             childRepository.save(child);
         }
